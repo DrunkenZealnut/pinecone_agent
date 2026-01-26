@@ -32,3 +32,10 @@ data/
 # Temp files
 tmp/
 temp/
+
+# Documents folder (contains uploaded files and data)
+documents/
+
+# MSDS folder - API integration and sensitive files
+msds/
+!msds_client.py

@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinecone Agent - AI 문서 검색</title>
+    <title>{{ config.title }} - AI 문서 검색</title>
     <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
+        :root {
+            --primary-color: {{ config.color }};
+            --gradient-from: {{ config.gradient_from }};
+            --gradient-to: {{ config.gradient_to }};
+            --primary-color-rgb: {{ config.color_rgb }};
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +33,39 @@
             padding: 20px;
         }
 
+        /* Navigation Bar */
+        nav {
+            background: rgba(0,0,0,0.3);
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav .home-link {
+            font-size: 1.2rem;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
         header {
             text-align: center;
             padding: 40px 0;
@@ -33,7 +73,7 @@
 
         header h1 {
             font-size: 2.5rem;
-            color: #00d4ff;
+            color: var(--primary-color);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -64,7 +104,7 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.2);
         }
 
         .stat-card .icon {
@@ -75,7 +115,7 @@
         .stat-card .value {
             font-size: 2rem;
             font-weight: bold;
-            color: #00d4ff;
+            color: var(--primary-color);
         }
 
         .stat-card .label {
@@ -93,7 +133,7 @@
         }
 
         .main-card h2 {
-            color: #00d4ff;
+            color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 1.5rem;
             display: flex;
@@ -144,8 +184,8 @@
 
         input[type="text"]:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.3);
         }
 
         input[type="text"]::placeholder, textarea::placeholder {
@@ -163,13 +203,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-            color: #000;
+            background: linear-gradient(135deg, var(--gradient-from) 0%, var(--gradient-to) 100%);
+            color: #fff;
         }
 
         .btn-primary:hover {
             transform: scale(1.02);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(var(--primary-color-rgb), 0.4);
         }
 
         .btn-ai {
@@ -210,7 +250,7 @@
         }
 
         .results-header h3 {
-            color: #00d4ff;
+            color: var(--primary-color);
         }
 
         .result-card {
@@ -223,7 +263,7 @@
         }
 
         .result-card:hover {
-            border-color: #00d4ff;
+            border-color: var(--primary-color);
         }
 
         .result-header {
@@ -234,8 +274,8 @@
         }
 
         .result-score {
-            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-            color: #000;
+            background: linear-gradient(135deg, var(--gradient-from) 0%, var(--gradient-to) 100%);
+            color: #fff;
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: bold;
@@ -308,7 +348,7 @@
         }
 
         .ai-answer-content h1, .ai-answer-content h2, .ai-answer-content h3 {
-            color: #00d4ff;
+            color: var(--primary-color);
             margin: 20px 0 10px 0;
         }
 
@@ -366,8 +406,8 @@
         }
 
         .ai-answer-content th {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3) 0%, rgba(0, 150, 200, 0.2) 100%);
-            color: #00d4ff;
+            background: linear-gradient(135deg, rgba(var(--primary-color-rgb), 0.3) 0%, rgba(var(--primary-color-rgb), 0.2) 100%);
+            color: var(--primary-color);
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.85rem;
@@ -379,7 +419,7 @@
         }
 
         .ai-answer-content tr:hover {
-            background: rgba(0, 212, 255, 0.1);
+            background: rgba(var(--primary-color-rgb), 0.1);
         }
 
         /* Image Gallery Styles */
@@ -418,8 +458,8 @@
 
         .image-item:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
-            border-color: #00d4ff;
+            box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+            border-color: var(--primary-color);
         }
 
         .image-item img {
@@ -482,7 +522,7 @@
         }
 
         .lightbox-close:hover {
-            color: #00d4ff;
+            color: var(--primary-color);
         }
 
         /* Chart Container */
@@ -509,7 +549,7 @@
         }
 
         .ai-answer-content strong {
-            color: #00d4ff;
+            color: var(--primary-color);
         }
 
         /* Citation styling */
@@ -575,7 +615,7 @@
         }
 
         .source-item-file {
-            color: #00d4ff;
+            color: var(--primary-color);
             word-break: break-all;
         }
 
@@ -643,8 +683,8 @@
         }
 
         .namespace-tag {
-            background: rgba(0, 212, 255, 0.2);
-            color: #00d4ff;
+            background: rgba(var(--primary-color-rgb), 0.2);
+            color: var(--primary-color);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9rem;
@@ -674,7 +714,7 @@
             width: 50px;
             height: 50px;
             border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #00d4ff;
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -747,9 +787,9 @@
         }
 
         .tab.active {
-            background: rgba(0, 212, 255, 0.2);
-            border-color: #00d4ff;
-            color: #00d4ff;
+            background: rgba(var(--primary-color-rgb), 0.2);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
         .tab.ai-tab.active {
@@ -767,8 +807,8 @@
         }
 
         .hint {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(var(--primary-color-rgb), 0.1);
+            border: 1px solid rgba(var(--primary-color-rgb), 0.3);
             border-radius: 8px;
             padding: 12px 15px;
             margin-top: 15px;
@@ -777,7 +817,18 @@
         }
 
         .hint strong {
-            color: #00d4ff;
+            color: var(--primary-color);
+        }
+
+        /* Sample Question Links */
+        .sample-question {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .sample-question:hover {
+            opacity: 0.7;
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
@@ -792,17 +843,33 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            nav .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="container">
+            <a href="/" class="home-link">🏠 홈</a>
+            <div class="nav-links">
+                <a href="/semiconductor">🔬 반도체</a>
+                <a href="/laborlaw">⚖️ 노동법</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <header>
             <h1>
-                <span>🤖</span>
-                반도체 AI 검색
+                <span>{{ config.icon }}</span>
+                {{ config.title }}
             </h1>
-            <p>문서 기반 AI 질의응답 시스템</p>
+            <p>{{ config.description }}</p>
         </header>
 
         <!-- Stats Cards -->
@@ -842,12 +909,12 @@
             <div class="main-card">
                 <h2>🤖 AI에게 질문하기</h2>
                 <p style="color: #888; margin-bottom: 20px;">
-                    반도체 관련 질문을 입력하면, 저장된 문서를 검색하여 AI가 종합적으로 답변합니다.
+                    {{ config.description }}
                 </p>
                 <form class="search-form" id="askForm">
                     <div class="search-input-group">
                         <label for="askQuery">질문 <span style="color: #9c27b0; font-size: 0.85rem;">(@로 문서 범위 지정 가능)</span></label>
-                        <textarea id="askQuery" name="query" placeholder="예: CVD와 PVD의 차이점은 무엇인가요?&#10;예: @반도체_제품_기획 에서 제품 기획 프로세스 설명해줘&#10;예: @패키지/ 폴더의 문서에서 조립 공정 종류는?" required></textarea>
+                        <textarea id="askQuery" name="query" placeholder="질문을 입력하세요..." required></textarea>
                     </div>
                     <div class="search-row">
                         <div class="search-input-group">
@@ -874,10 +941,10 @@
                 </form>
 
                 <div class="hint">
-                    <strong>💡 Tip:</strong> <code>@</code>를 사용하여 검색 범위를 좁힐 수 있습니다.<br>
-                    • <code>@파일명</code> - 특정 파일에서만 검색 (예: <code>@반도체_아키텍처</code>)<br>
-                    • <code>@폴더명/</code> - 특정 폴더에서만 검색 (예: <code>@패키지/</code>)<br>
-                    • 여러 개 사용 가능: <code>@제품_기획 @아키텍처 CVD 공정 비교</code>
+                    <strong>💡 샘플 질문:</strong><br>
+                    {% for question in config.sample_questions %}
+                    • <a href="#" class="sample-question" style="color: var(--primary-color);">{{ question }}</a><br>
+                    {% endfor %}
                 </div>
 
                 <div class="hint" style="background: rgba(156, 39, 176, 0.1); border-color: rgba(156, 39, 176, 0.3); margin-top: 10px;">
@@ -1014,8 +1081,24 @@
     </div>
 
     <script>
+        // Default namespace configuration
+        const DEFAULT_NAMESPACE = '{{ config.namespace }}';
+
         // Active chart instances for cleanup
         let activeCharts = [];
+
+        // Set default namespace value on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('askNamespace').value = DEFAULT_NAMESPACE;
+        });
+
+        // Sample question click handlers
+        document.querySelectorAll('.sample-question').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('askQuery').value = e.target.textContent;
+            });
+        });
 
         // Tab functionality
         document.querySelectorAll('.tab').forEach(tab => {
@@ -1215,8 +1298,10 @@
                                 select.appendChild(option);
                             });
 
-                            // Auto-select the namespace with most vectors
-                            if (maxVectorsNs !== null) {
+                            // Use default namespace if configured, otherwise use the one with most vectors
+                            if (DEFAULT_NAMESPACE) {
+                                select.value = DEFAULT_NAMESPACE;
+                            } else if (maxVectorsNs !== null) {
                                 select.value = maxVectorsNs;
                             }
                         }

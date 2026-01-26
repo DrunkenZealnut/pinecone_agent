@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinecone Agent - 도메인 선택</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        header p {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .domain-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .domain-card.semiconductor {
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .domain-card.semiconductor:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .domain-card.laborlaw {
+            border-color: rgba(255, 152, 0, 0.3);
+        }
+
+        .domain-card.laborlaw:hover {
+            border-color: #ff9800;
+            box-shadow: 0 15px 40px rgba(255, 152, 0, 0.4);
+        }
+
+        .domain-card.msds {
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .domain-card.msds:hover {
+            border-color: #4caf50;
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+        }
+
+        .domain-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .domain-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .domain-card.semiconductor .domain-title {
+            color: #00d4ff;
+        }
+
+        .domain-card.laborlaw .domain-title {
+            color: #ff9800;
+        }
+
+        .domain-card.msds .domain-title {
+            color: #4caf50;
+        }
+
+        .domain-description {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .domain-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .feature-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .domain-card.semiconductor .feature-tag {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+
+        .domain-card.laborlaw .feature-tag {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .domain-card.msds .feature-tag {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .stats-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stats-info h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Pinecone Agent</h1>
+            <p>AI 기반 문서 검색 및 질의응답 시스템</p>
+        </header>
+
+        <div class="domain-grid">
+            <a href="/semiconductor" class="domain-card semiconductor">
+                <div class="domain-icon">🔬</div>
+                <div class="domain-title">반도체 기술</div>
+                <div class="domain-description">
+                    반도체 공정, 아키텍처, 제조 기술 관련<br>
+                    전문 문서 검색 및 AI 질의응답
+                </div>
+                <div class="domain-features">
+                    <span class="feature-tag">CVD/PVD 공정</span>
+                    <span class="feature-tag">패키징</span>
+                    <span class="feature-tag">아키텍처</span>
+                    <span class="feature-tag">제조 기술</span>
+                </div>
+            </a>
+
+            <a href="/laborlaw" class="domain-card laborlaw">
+                <div class="domain-icon">⚖️</div>
+                <div class="domain-title">노동법</div>
+                <div class="domain-description">
+                    근로기준법, 판례, 임금 및 보험료 계산<br>
+                    노동법 관련 AI 법률 상담
+                </div>
+                <div class="domain-features">
+                    <span class="feature-tag">임금계산</span>
+                    <span class="feature-tag">4대보험</span>
+                    <span class="feature-tag">근로기준법</span>
+                    <span class="feature-tag">판례 검색</span>
+                </div>
+            </a>
+
+            <a href="/msds" class="domain-card msds">
+                <div class="domain-icon">🧪</div>
+                <div class="domain-title">MSDS 화학물질</div>
+                <div class="domain-description">
+                    산업안전보건공단 물질안전보건자료<br>
+                    화학물질 안전정보 검색
+                </div>
+                <div class="domain-features">
+                    <span class="feature-tag">화학물질 검색</span>
+                    <span class="feature-tag">MSDS 정보</span>
+                    <span class="feature-tag">안전 데이터</span>
+                    <span class="feature-tag">CAS 번호</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="stats-info">
+            <h3>📊 시스템 현황</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalVectors">-</div>
+                    <div class="stat-label">총 문서</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="namespaceCount">-</div>
+                    <div class="stat-label">도메인</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="indexName">-</div>
+                    <div class="stat-label">인덱스</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load stats
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('totalVectors').textContent =
+                        data.data.total_vectors.toLocaleString();
+                    document.getElementById('namespaceCount').textContent =
+                        data.data.namespaces.length;
+                    document.getElementById('indexName').textContent =
+                        data.data.index_name;
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        loadStats();
+    </script>
+</body>
+</html>

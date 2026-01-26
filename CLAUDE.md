@@ -15,6 +15,16 @@ cp .env.example .env
 # Edit .env with API keys
 ```
 
+### Web Server
+```bash
+# Start development server
+python web_app.py
+
+# Kill process using port 5001 (if needed)
+lsof -ti:5001 | xargs kill -15  # Graceful termination
+lsof -ti:5001 | xargs kill -9   # Force kill (if -15 doesn't work)
+```
+
 ### CLI Usage
 ```bash
 # Process folder and upload to Pinecone
